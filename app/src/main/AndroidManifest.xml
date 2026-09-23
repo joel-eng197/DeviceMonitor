@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Réseau : lecture du type/état de connexion -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Best effort : libère les processus mis en cache d'autres apps.
+         N'arrête PAS un service actif ; ne remplace pas "Forcer l'arrêt". -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+
+    <!-- Permission spéciale : ne peut PAS être demandée par une popup.
+         L'utilisateur doit l'activer manuellement dans
+         Paramètres > Accès spécial > Accès à l'utilisation. -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+    <application
+        android:allowBackup="true"
+        android:label="Moniteur Appareil"
+        android:icon="@android:drawable/sym_def_app_icon"
+        android:theme="@style/Theme.DeviceMonitor"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

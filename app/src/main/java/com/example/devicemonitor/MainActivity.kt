@@ -15,8 +15,10 @@ import android.os.Bundle
 import android.os.Process
 import android.os.StatFs
 import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import android.widget.CompoundButton
+import android.widget.ScrollView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
@@ -44,46 +46,67 @@ class MainActivity : AppCompatActivity() {
 
     private val refreshRunnable = object : Runnable {
         override fun run() {
-            if (screenEtat.visibility == android.view.View.VISIBLE) loadDeviceInfo()
+            try {
+                if (screenEtat.visibility == android.view.View.VISIBLE) loadDeviceInfo()
+            } catch (e: Throwable) { }
             if (autoRefresh) handler.postDelayed(this, 5000)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        prefs = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        try {
+            setContentView(R.layout.activity_main)
+            prefs = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-        screenEtat = findViewById(R.id.screenEtat)
-        screenApps = findViewById(R.id.screenApps)
-        screenReglages = findViewById(R.id.screenReglages)
-        bottomNav = findViewById(R.id.bottomNav)
-        recyclerApps = findViewById(R.id.recyclerApps)
-        swipeApps = findViewById(R.id.swipeApps)
-        usageWarning = findViewById(R.id.txtUsageAccessWarning)
+            screenEtat = findViewById(R.id.screenEtat)
+            screenApps = findViewById(R.id.screenApps)
+            screenReglages = findViewById(R.id.screenReglages)
+            bottomNav = findViewById(R.id.bottomNav)
+            recyclerApps = findViewById(R.id.recyclerApps)
+            swipeApps = findViewById(R.id.swipeApps)
+            usageWarning = findViewById(R.id.txtUsageAccessWarning)
 
-        recyclerApps.layoutManager = LinearLayoutManager(this)
-        adapter = AppsAdapter(emptyList(), ::onSuspendApp, ::onOpenAppSettings)
-        recyclerApps.adapter = adapter
+            recyclerApps.layoutManager = LinearLayoutManager(this)
+            adapter = AppsAdapter(emptyList(), ::onSuspendApp, ::onOpenAppSettings)
+            recyclerApps.adapter = adapter
 
-        bottomNav.setOnItemSelectedListener { item ->
-            screenEtat.visibility = android.view.View.GONE
-            screenApps.visibility = android.view.View.GONE
-            screenReglages.visibility = android.view.View.GONE
-            when (item.itemId) {
-                R.id.tab_etat -> { screenEtat.visibility = android.view.View.VISIBLE; loadDeviceInfo() }
-                R.id.tab_apps -> { screenApps.visibility = android.view.View.VISIBLE; loadBackgroundApps() }
-                R.id.tab_reglages -> screenReglages.visibility = android.view.View.VISIBLE
+            bottomNav.setOnItemSelectedListener { item ->
+                screenEtat.visibility = android.view.View.GONE
+                screenApps.visibility = android.view.View.GONE
+                screenReglages.visibility = android.view.View.GONE
+                try {
+                    when (item.itemId) {
+                        R.id.tab_etat -> { screenEtat.visibility = android.view.View.VISIBLE; loadDeviceInfo() }
+                        R.id.tab_apps -> { screenApps.visibility = android.view.View.VISIBLE; loadBackgroundApps() }
+                        R.id.tab_reglages -> screenReglages.visibility = android.view.View.VISIBLE
+                    }
+                } catch (e: Throwable) { showCrashScreen(e) }
+                true
             }
-            true
+
+            swipeApps.setOnRefreshListener {
+                try { loadBackgroundApps() } catch (e: Throwable) { showCrashScreen(e) }
+            }
+            usageWarning.setOnClickListener { openUsageAccessSettings() }
+
+            setupSettingsScreen()
+            loadDeviceInfo()
+            handler.postDelayed(refreshRunnable, 5000)
+        } catch (e: Throwable) {
+            showCrashScreen(e)
         }
+    }
 
-        swipeApps.setOnRefreshListener { loadBackgroundApps() }
-        usageWarning.setOnClickListener { openUsageAccessSettings() }
-
-        setupSettingsScreen()
-        loadDeviceInfo()
-        handler.postDelayed(refreshRunnable, 5000)
+    private fun showCrashScreen(e: Throwable) {
+        Log.e("DeviceMonitor", "Crash", e)
+        val tv = TextView(this).apply {
+            text = "ERREUR :\n\n" + Log.getStackTraceString(e)
+            setTextIsSelectable(true)
+            setPadding(28, 60, 28, 60)
+            textSize = 11f
+        }
+        setContentView(ScrollView(this).apply { addView(tv) })
     }
 
     override fun onDestroy() {

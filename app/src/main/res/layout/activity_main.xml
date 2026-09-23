@@ -120,17 +120,17 @@
 
             <LinearLayout style="@style/SettingRow">
                 <TextView style="@style/SettingLabel" android:text="Rafraîchissement auto (5 s)" />
-                <Switch android:id="@+id/switchAutoRefresh" android:checked="true" />
+                <Switch android:id="@+id/switchAutoRefresh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" />
             </LinearLayout>
 
             <LinearLayout style="@style/SettingRow">
                 <TextView style="@style/SettingLabel" android:text="Alerte batterie faible (moins de 20 %)" />
-                <Switch android:id="@+id/switchBattAlert" android:checked="true" />
+                <Switch android:id="@+id/switchBattAlert" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" />
             </LinearLayout>
 
             <LinearLayout style="@style/SettingRow">
                 <TextView style="@style/SettingLabel" android:text="Alerte hors Wi-Fi" />
-                <Switch android:id="@+id/switchDataAlert" android:checked="false" />
+                <Switch android:id="@+id/switchDataAlert" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false" />
             </LinearLayout>
 
             <Button

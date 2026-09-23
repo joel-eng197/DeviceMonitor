@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/panel"
+    android:padding="14dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginBottom="6dp">
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="12dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtAppName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/txtAppUsage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            android:fontFamily="monospace" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSuspend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suspendre"
+        android:textSize="11sp"
+        android:backgroundTint="@color/panel2"
+        android:textColor="@color/text_main"
+        android:layout_marginEnd="6dp" />
+
+    <Button
+        android:id="@+id/btnOpenSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Réglages"
+        android:textSize="11sp"
+        android:backgroundTint="@color/accent"
+        android:textColor="#0B1210" />
+
+</LinearLayout>

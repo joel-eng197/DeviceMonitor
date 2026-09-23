@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <TextView
+        android:id="@+id/titleBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/text_main"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingStart="18dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ===================== ÉCRAN ÉTAT ===================== -->
+    <ScrollView
+        android:id="@+id/screenEtat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="14dp"
+        app:layout_constraintTop_toBottomOf="@id/titleBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/txtBattery" style="@style/CardValue" android:text="Batterie : --" />
+            <TextView android:id="@+id/txtRam" style="@style/CardValue" android:text="RAM : --" />
+            <TextView android:id="@+id/txtStorage" style="@style/CardValue" android:text="Stockage : --" />
+            <TextView android:id="@+id/txtNetwork" style="@style/CardValue" android:text="Réseau : --" />
+            <TextView android:id="@+id/txtCpu" style="@style/CardValue" android:text="CPU : --" />
+            <TextView android:id="@+id/txtAndroidVersion" style="@style/CardValue" android:text="Android : --" />
+            <TextView android:id="@+id/txtModel" style="@style/CardValue" android:text="Modèle : --" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Ces valeurs viennent directement des API Android (BatteryManager, ActivityManager, ConnectivityManager, StatFs). Tire vers le bas pour actualiser."
+                android:textColor="@color/text_muted"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ===================== ÉCRAN APPS ===================== -->
+    <LinearLayout
+        android:id="@+id/screenApps"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/titleBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/txtUsageAccessWarning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="14dp"
+            android:background="@color/panel2"
+            android:textColor="@color/warn"
+            android:textSize="12.5sp"
+            android:text="Accès à l'utilisation requis pour voir la consommation data par app. Appuie ici pour l'activer dans les Paramètres." />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeApps"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerApps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="6dp"
+                android:clipToPadding="false" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="14dp"
+            android:textColor="@color/text_muted"
+            android:textSize="11.5sp"
+            android:text="« Suspendre » libère les processus en cache (effet limité). « Ouvrir réglages » permet de forcer l'arrêt réel ou de couper les données en arrière-plan pour cette app." />
+    </LinearLayout>
+
+    <!-- ===================== ÉCRAN RÉGLAGES ===================== -->
+    <ScrollView
+        android:id="@+id/screenReglages"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="14dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/titleBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/SettingRow">
+                <TextView style="@style/SettingLabel" android:text="Rafraîchissement auto (5 s)" />
+                <Switch android:id="@+id/switchAutoRefresh" android:checked="true" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingRow">
+                <TextView style="@style/SettingLabel" android:text="Alerte batterie faible (moins de 20 %)" />
+                <Switch android:id="@+id/switchBattAlert" android:checked="true" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingRow">
+                <TextView style="@style/SettingLabel" android:text="Alerte hors Wi-Fi" />
+                <Switch android:id="@+id/switchDataAlert" android:checked="false" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnUsageAccess"
+                style="@style/GhostButton"
+                android:text="Activer l'accès à l'utilisation" />
+
+            <Button
+                android:id="@+id/btnReset"
+                style="@style/GhostButton"
+                android:text="Réinitialiser les réglages" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/panel"
+        app:itemIconTint="@color/accent"
+        app:itemTextColor="@color/text_main"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
